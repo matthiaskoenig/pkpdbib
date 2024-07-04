@@ -106,8 +106,7 @@ Retrieve PDFs via Sci-hub
 
 - Open the zotero library, select items without PDF attachment, right click -> Export items -> CSV -> <substance>.csv
 
-
-Run script from `src/pkdb_literature/scihub.tools`::
+Run script ::
 
     scihub_pdfs -z <substance>.csv
 
