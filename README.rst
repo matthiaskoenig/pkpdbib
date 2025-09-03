@@ -110,4 +110,4 @@ Run script ::
 
     scihub_pdfs -z <substance>.csv
 
-© 2021-2024 Matthias König
+© 2021-2025 Matthias König
