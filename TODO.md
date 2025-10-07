@@ -1,2 +1,3 @@
-- [ ] retrieve information/dois/names directly from literature database (zotero);
+- [ ] improve repository
+- [ ] store PDFs under zotero key
 - [ ] add PDFs to literature database
