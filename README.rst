@@ -108,6 +108,7 @@ Retrieve PDFs via Sci-hub
 
 Run script ::
 
+    scidownl domain.update
     scihub_pdfs -j <substance>.json
 
 © 2021-2025 Matthias König

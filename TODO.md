@@ -1,3 +1,2 @@
 - [ ] improve repository
-- [ ] store PDFs under zotero key
 - [ ] add PDFs to literature database

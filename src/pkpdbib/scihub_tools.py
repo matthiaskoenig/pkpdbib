@@ -46,7 +46,8 @@ def scihub_pdfs_from_dois(
     for k, key in enumerate(dois):
         doi = dois[key]
         pdf_path = pdf_dir / f"{key}.pdf"
-        console.print(f"[{k+1}/{num_dois}] {pdf_path} ({doi}")
+        console.print()
+        console.rule(f"[{k+1}/{num_dois}] {pdf_path} ({doi})", style="bold white", align="left")
         if pdf_path.exists():
             continue
         scihub_pdf_from_doi(doi=doi, pdf_path=pdf_path, scihub_url=scihub_url)
