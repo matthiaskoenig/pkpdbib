@@ -104,10 +104,11 @@ Documentation
 =============
 Retrieve PDFs via Sci-hub
 
-- Open the zotero library, select items without PDF attachment, right click -> Export items -> CSV -> <substance>.csv
+- Open the zotero library, select items without PDF attachment, right click -> Export items -> BetterBibTeX JSON -> <substance>.json
 
 Run script ::
 
-    scihub_pdfs -z <substance>.csv
+    scidownl domain.update
+    scihub_pdfs -j <substance>.json
 
 © 2021-2025 Matthias König

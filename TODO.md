@@ -1,2 +1,2 @@
-- [ ] retrieve information/dois/names directly from literature database (zotero);
+- [ ] improve repository
 - [ ] add PDFs to literature database
