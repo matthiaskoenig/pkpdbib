@@ -111,4 +111,4 @@ Run script ::
     scidownl domain.update
     scihub_pdfs -j <substance>.json
 
-© 2021-2025 Matthias König
+© 2021-2026 Matthias König
