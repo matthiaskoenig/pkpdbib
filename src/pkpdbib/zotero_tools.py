@@ -1,94 +1,134 @@
-"""Programmatic access to zotero.
+"""Programmatic access to Zotero libraries.
 
-**Documentation**
-https://pyzotero.readthedocs.org
+Needs the optional `zotero` extra, i.e., `pip install "pkpdbib[zotero]"`.
 
-**api key**:
-https://www.zotero.org/settings/keys/new
-
-**group ids**:
-For group libraries, the ID can be found by opening the group’s page:
-https://www.zotero.org/groups, and hovering over the group settings link.
-The ID is the integer after /groups/
+- documentation of pyzotero: https://pyzotero.readthedocs.io
+- API key: https://www.zotero.org/settings/keys/new
+- group id: open the page of the group via https://www.zotero.org/groups and
+  hover over the link to the group settings, the id is the integer after
+  `/groups/`.
 """
 
-from typing import Dict, List, Optional, Set
+import re
+from collections.abc import Iterable
+from typing import Any
 
-import pandas as pd
-from pyzotero import zotero
+try:
+    import polars as pl
+    from pyzotero import zotero
+except ImportError as err:  # pragma: no cover
+    msg = (
+        "pkpdbib.zotero_tools needs the optional `zotero` dependencies, "
+        'install them with `pip install "pkpdbib[zotero]"`.'
+    )
+    raise ImportError(msg) from err
 
 from pkpdbib.console import console
+
+PMID_PATTERN = re.compile(r"^PMID:\s*(\d+)\s*$", re.MULTILINE)
 
 
 def create_zot_client(
     api_key: str, library_id: int, library_type: str = "group"
 ) -> zotero.Zotero:
-    """Create zotero client for library."""
+    """Create a Zotero client bound to a library.
+
+    The item methods of the client only operate on this library.
+
+    Args:
+        api_key: Zotero API key with read access to the library.
+        library_id: id of the user or group library.
+        library_type: `group` or `user`.
+
+    Returns:
+        The client.
+    """
     return zotero.Zotero(library_id, library_type, api_key)
 
 
 def get_items(
-    zot: zotero.Zotero, show: bool = False, limit: Optional[int] = None
-) -> List[Dict]:
-    """List items for library."""
+    zot: zotero.Zotero, show: bool = False, limit: int | None = None
+) -> list[dict[str, Any]]:
+    """Get the top level items of the library.
 
+    Args:
+        zot: client of the library, see `create_zot_client`.
+        show: print the items to the console.
+        limit: maximal number of items; all items if `None`.
+
+    Returns:
+        The items as returned by the Zotero API.
     """
-    A Zotero instance is bound to the library or group used to create it.
-    Thus, if you create a Zotero instance with a library_id of 67 and a
-    library_type of group, its item methods will only operate upon that group.
-    """
-    items: List[Dict]
-    if limit:
-        items = zot.top(limit=limit)  # top level items
-    else:
-        items = zot.top()  # top level items
+    # the API returns the items in pages, `everything` follows all pages
+    items: list[dict[str, Any]] = (
+        zot.top(limit=limit) if limit else zot.everything(zot.top())
+    )
 
     if show:
         for k, item in enumerate(items):
-            console.rule(title=f"Item {k+1}", align="left", style="white")
-            # console.print(item['data'])
-            # console.print()
+            console.rule(title=f"Item {k + 1}", align="left", style="white")
             console.print(item)
     return items
 
 
+def pmid_from_extra(extra: str | None) -> str | None:
+    """Get the PubMed id from the `extra` field of a Zotero item.
+
+    Args:
+        extra: `extra` field with one `key: value` per line, e.g.,
+            `PMID: 27267043` and `PMCID: PMC4895977`.
+
+    Returns:
+        The PubMed id or `None`.
+    """
+    if not extra:
+        return None
+    match = PMID_PATTERN.search(extra)
+    return match.group(1) if match else None
+
+
 def create_tag_table(
-    items: List[Dict],
-    tags_set: Set[str],
-    tag_prefixes: List[str],
-) -> pd.DataFrame:
-    """Create table with tags."""
+    items: Iterable[dict[str, Any]],
+    tags_set: Iterable[str],
+    tag_prefixes: Iterable[str],
+) -> pl.DataFrame:
+    """Create a table of the items with the selected tags.
 
-    metadata: List[Dict] = []
+    A tag is selected if it is in `tags_set` or starts with one of the
+    `tag_prefixes`. Every selected tag is a boolean column, which is `True` for
+    the items with the tag.
 
-    for _, item in enumerate(items):
-        key = item["key"]
+    Args:
+        items: items of a library, see `get_items`.
+        tags_set: tags to select.
+        tag_prefixes: prefixes of the tags to select, e.g., `"species:"`.
+
+    Returns:
+        The table with the columns `key`, `doi`, `pubmed` and one column per
+        selected tag.
+    """
+    tags_set = set(tags_set)
+    tag_prefixes = tuple(tag_prefixes)
+
+    rows: list[dict[str, Any]] = []
+    tag_columns: dict[str, None] = {}
+    for item in items:
         data = item["data"]
-
-        md = {
-            "key": key,
-            "doi": data["DOI"],
-            "pubmed": None,
+        row: dict[str, Any] = {
+            "key": item["key"],
+            "doi": data.get("DOI") or None,
+            "pubmed": pmid_from_extra(data.get("extra")),
         }
-        # 'extra': 'PMID: 27267043 \nPMCID: PMC4895977',
+        for tag in (t["tag"] for t in data.get("tags", [])):
+            if tag in tags_set or tag.startswith(tag_prefixes):
+                row[tag] = True
+                tag_columns[tag] = None
+        rows.append(row)
 
-        item_tags = list()
-        tags = [v["tag"] for v in data["tags"]]
-        for tag in tags:
-            if tag in tags_set:
-                item_tags.append(tag)
-                continue
-
-            for prefix in tag_prefixes:
-                if tag.startswith(prefix):
-                    item_tags.append(tag)
-                    continue
-
-        for item_tag in item_tags:
-            md[item_tag] = True
-
-        metadata.append(md)
-
-    df = pd.DataFrame(metadata)
-    console.print(df.to_string())
+    schema: dict[str, Any] = {"key": pl.String, "doi": pl.String, "pubmed": pl.String}
+    schema.update(dict.fromkeys(tag_columns, pl.Boolean))
+    df = pl.DataFrame(rows, schema=schema).with_columns(
+        pl.col(list(tag_columns)).fill_null(False)
+    )
+    console.print(df)
     return df

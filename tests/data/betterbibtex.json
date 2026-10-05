@@ -1,0 +1,26 @@
+{
+  "config": {
+    "id": "36a3b0b5-bad0-4a04-b79b-441c7cef77db",
+    "label": "BetterBibTeX JSON"
+  },
+  "collections": {},
+  "items": [
+    {
+      "itemType": "journalArticle",
+      "title": "A study of dose-proportionality in the pharmacokinetics of the oral direct renin inhibitor aliskiren in healthy subjects.",
+      "DOI": "10.5414/cpp46252",
+      "citationKey": "limoges2008"
+    },
+    {
+      "itemType": "journalArticle",
+      "title": "Absorption, distribution, metabolism, and elimination of the direct renin inhibitor aliskiren in healthy volunteers.",
+      "DOI": "10.1124/dmd.106.013797",
+      "citationKey": "waldmeier2007"
+    },
+    {
+      "itemType": "book",
+      "title": "A book without DOI",
+      "citationKey": "nodoi2020"
+    }
+  ]
+}

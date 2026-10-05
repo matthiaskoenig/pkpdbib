@@ -1,0 +1,118 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pkpdbib"
+dynamic = ["version"]
+description = "pkpdbib are python utilities for PK/PD literature and bibliography management."
+readme = "README.md"
+requires-python = ">=3.13"
+license = "LGPL-3.0-only"
+license-files = ["LICENSE"]
+authors = [
+	{name="Matthias König", email="konigmatt@googlemail.com"}
+]
+maintainers = [
+	{name="Matthias König", email="konigmatt@googlemail.com"}
+]
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Intended Audience :: Science/Research",
+	"Operating System :: OS Independent",
+	"Programming Language :: Python :: 3.13",
+	"Programming Language :: Python :: 3.14",
+	"Programming Language :: Python :: 3.15",
+	"Programming Language :: Python :: Implementation :: CPython",
+	"Topic :: Scientific/Engineering",
+	"Topic :: Scientific/Engineering :: Bio-Informatics",
+	"Typing :: Typed",
+]
+keywords = [
+	"literature",
+	"bibliography",
+	"zotero",
+	"pubmed",
+	"scihub",
+	"pharmacokinetics",
+	"pharmacodynamics",
+]
+dependencies = [
+	"rich>=15.0.0",
+	"scidownl>=1.0.2",
+]
+
+[project.optional-dependencies]
+# access to zotero libraries, see `pkpdbib.zotero_tools`
+zotero = [
+	"pyzotero>=1.15.2",
+	"polars>=1.44.2",
+]
+dev = [
+	"pkpdbib[zotero]",
+	"bump-my-version>=1.5.1",
+	"ruff>=0.16.9",
+	"pre-commit>=4.6.2",
+	"ty>=0.0.84",
+	"tox>=4.64.5",
+	"pytest>=9.1.1",
+	"pytest-cov>=7.1.0",
+	"zensical>=0.0.60",
+	"mkdocstrings-python>=2.0.8",
+]
+
+[project.scripts]
+scihub_pdfs = "pkpdbib.scihub_tools:scihub_pdfs_command"
+
+[project.urls]
+Homepage = "https://matthiaskoenig.github.io/pkpdbib"
+Documentation = "https://matthiaskoenig.github.io/pkpdbib"
+Repository = "https://github.com/matthiaskoenig/pkpdbib"
+Issues = "https://github.com/matthiaskoenig/pkpdbib/issues"
+Changelog = "https://github.com/matthiaskoenig/pkpdbib/tree/develop/release-notes"
+Download = "https://pypi.org/project/pkpdbib"
+
+[tool.hatch.version]
+path = "./src/pkpdbib/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+# the package with what builds and tests it, nothing else of the repository
+only-include = [
+	"src",
+	"tests",
+	"examples",
+	"tox.ini",
+	"README.md",
+	"LICENSE",
+	"CITATION.cff",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/pkpdbib"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = [
+    # scidownl uses the sqlalchemy 1.x location of `declarative_base`; the
+    # warning is not ours to fix
+    "ignore:The ``declarative_base\\(\\)`` function is now available:DeprecationWarning:scidownl",
+]
+
+[tool.ty.environment]
+# first-party modules live in the src layout; the checked python version is
+# inferred from `project.requires-python` (i.e. the oldest supported version)
+root = ["./src"]
+
+[tool.ty.src]
+include = ["src", "tests", "examples", "scripts"]
+
+[tool.ty.terminal]
+# warnings are failures: keep the codebase free of any diagnostic
+error-on-warning = true
+
+[tool.pyright]
+# pyright is not a check of the project, types are checked with ty; this only
+# points the pyright language server of an editor or agent at the uv
+# environment, so that the dependencies resolve
+venvPath = "."
+venv = ".venv"
