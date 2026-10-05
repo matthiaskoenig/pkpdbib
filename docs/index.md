@@ -27,7 +27,7 @@ See [Installation](installation.md) and [PDF retrieval](pdfs.md) for the details
 
 If you use `pkpdbib` please cite the archived software on [Zenodo](https://doi.org/10.5281/zenodo.11076700). The DOI always resolves to the latest version, the current release is archived as:
 
-> König, M. (2026). *pkpdbib: python utilities for PK/PD literature and bibliography management* (Version 0.2.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23154630
+> König, M. (2026). *pkpdbib: python utilities for PK/PD literature and bibliography management* (Version 0.2.1) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23154802
 
 ```bibtex
 @software{konig_pkpdbib,
@@ -35,10 +35,10 @@ If you use `pkpdbib` please cite the archived software on [Zenodo](https://doi.o
   title     = {pkpdbib: python utilities for PK/PD literature and bibliography management},
   year      = {2026},
   month     = oct,
-  version   = {0.2.0},
+  version   = {0.2.1},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.23154630},
-  url       = {https://doi.org/10.5281/zenodo.23154630},
+  doi       = {10.5281/zenodo.23154802},
+  url       = {https://doi.org/10.5281/zenodo.23154802},
 }
 ```
 
