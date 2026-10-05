@@ -1,10 +1,6 @@
 # Zotero libraries
 
-`pkpdbib.zotero_tools` provides programmatic access to [Zotero](https://www.zotero.org) libraries via [pyzotero](https://pyzotero.readthedocs.io) and creates tables of the tags of their items with [polars](https://pola.rs). It needs the optional `zotero` extra:
-
-```bash
-pip install "pkpdbib[zotero]"
-```
+`pkpdbib.zotero_tools` provides programmatic access to [Zotero](https://www.zotero.org) libraries via [pyzotero](https://pyzotero.readthedocs.io) and creates tables of the tags of their items with [polars](https://pola.rs).
 
 ## Access
 

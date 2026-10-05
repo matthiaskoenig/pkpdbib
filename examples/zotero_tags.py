@@ -1,6 +1,6 @@
 """Table of the tags of a Zotero group library.
 
-Needs the optional `zotero` extra and a Zotero API key with read access to the
+Needs a Zotero API key with read access to the
 library in the environment variable `ZOTERO_API_KEY`:
 
 ```bash

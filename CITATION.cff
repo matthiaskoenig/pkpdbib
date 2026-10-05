@@ -11,7 +11,7 @@ authors:
 version: "0.2.0"
 date-released: "2026-10-05"
 doi: "10.5281/zenodo.11076700"
-license: LGPL-3.0-only
+license: MIT
 repository-code: "https://github.com/matthiaskoenig/pkpdbib"
 url: "https://matthiaskoenig.github.io/pkpdbib"
 keywords:

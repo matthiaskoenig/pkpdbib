@@ -22,15 +22,9 @@ uvx --from pkpdbib scihub_pdfs -j aliskiren.json
 pip install pkpdbib
 ```
 
-## Extras
+## Dependencies
 
-The core package only depends on `rich` and `scidownl`. The [Zotero utilities](zotero.md) need the optional `zotero` extra, which adds `pyzotero` and `polars`:
-
-```bash
-pip install "pkpdbib[zotero]"
-```
-
-Without the extra, the import of `pkpdbib.zotero_tools` fails with a message naming the extra.
+`pkpdbib` depends on `rich` for the console output, `scidownl` for the [PDF retrieval](pdfs.md), and `pyzotero` and `polars` for the [Zotero libraries](zotero.md).
 
 ## Development version
 

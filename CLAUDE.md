@@ -9,14 +9,17 @@ retrieval of the PDFs of the DOIs of a Zotero export (Better BibTeX JSON) via
 scidownl (`pkpdbib.scihub_tools`, CLI `scihub_pdfs`) and access to Zotero
 libraries via pyzotero with tag tables in polars (`pkpdbib.zotero_tools`).
 Requires python >= 3.13, packaged with hatchling (version is read from
-`src/pkpdbib/__init__.py`). Runtime dependencies are `rich` and `scidownl`;
-`pyzotero` and `polars` are the optional `zotero` extra. Keep the footprint
-small: no new runtime dependency without need, no pandas.
+`src/pkpdbib/__init__.py`). Runtime dependencies are `rich`, `scidownl`,
+`pyzotero` and `polars`. Keep the footprint small: no new runtime dependency
+without need, no pandas. MIT licensed.
+
+The README is a short entry point (description, installation, citation,
+license); the content lives in the documentation in `docs/`.
 
 ## Commands
 
 ```bash
-# environment (uv based, uv.lock is committed); the dev extra includes zotero
+# environment (uv based, uv.lock is committed)
 uv sync --extra dev
 uv run pre-commit install
 

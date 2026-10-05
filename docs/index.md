@@ -29,11 +29,24 @@ If you use `pkpdbib` please cite the archived software on [Zenodo](https://doi.o
 
 > König, M. (2026). *pkpdbib: python utilities for PK/PD literature and bibliography management* (Version 0.2.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23154630
 
+```bibtex
+@software{konig_pkpdbib,
+  author    = {König, Matthias},
+  title     = {pkpdbib: python utilities for PK/PD literature and bibliography management},
+  year      = {2026},
+  month     = oct,
+  version   = {0.2.0},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.23154630},
+  url       = {https://doi.org/10.5281/zenodo.23154630},
+}
+```
+
 The citation metadata is in [CITATION.cff](https://github.com/matthiaskoenig/pkpdbib/blob/develop/CITATION.cff).
 
 ## License
 
-- Source code: [LGPLv3](https://opensource.org/licenses/LGPL-3.0)
+- Source code: [MIT](https://opensource.org/license/MIT)
 - Documentation: [CC BY-SA 4.0](http://creativecommons.org/licenses/by-sa/4.0/)
 
 ## Funding
