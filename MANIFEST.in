@@ -1,5 +1,0 @@
-include LICENSE
-include README.rst
-include src/pkpdbib/py.typed
-
-recursive-include src/pkpdbib/resources/ *

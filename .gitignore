@@ -1,27 +1,40 @@
-.vscode
+# python
+__pycache__/
 *.pyc
-*~
-*.csv#
-.DS_Store
-.eggs/
-dist
-build
-.idea
-cover/
+
+# packaging artifacts (hatchling builds into dist/)
+dist/
+*.egg-info/
+
+# environments, tool caches
+.venv/
 .tox/
-.cache/
+.pytest_cache/
+.ruff_cache/
 .coverage
 coverage.xml
-.benchmark
-src/pkpdbib.egg-info/
+# build cache of zensical
+.cache/
+
+# rendered documentation, built by the `documentation` workflow
+site/
 
 
+# working files of coding agents
+.superpowers/
 
-wheels
-__pycache__
-.pytest_cache
-.Rhistory
+# editors, operating system
+.idea/
+.vscode/
+*~
+.DS_Store
 
+# output of `scihub_pdfs` and of the examples
 results/
 dois/
+*.pdf
+zotero_tags.csv
+
+# never commit API keys
 .api_keys.txt
+.env
