@@ -25,7 +25,11 @@ See [Installation](installation.md) and [PDF retrieval](pdfs.md) for the details
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11076700.svg)](https://doi.org/10.5281/zenodo.11076700)
 
-If you use `pkpdbib` please cite the archived software on [Zenodo](https://doi.org/10.5281/zenodo.11076700). The DOI always resolves to the latest version, the citation metadata is in [CITATION.cff](https://github.com/matthiaskoenig/pkpdbib/blob/develop/CITATION.cff).
+If you use `pkpdbib` please cite the archived software on [Zenodo](https://doi.org/10.5281/zenodo.11076700). The DOI always resolves to the latest version, the current release is archived as:
+
+> König, M. (2026). *pkpdbib: python utilities for PK/PD literature and bibliography management* (Version 0.2.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23154630
+
+The citation metadata is in [CITATION.cff](https://github.com/matthiaskoenig/pkpdbib/blob/develop/CITATION.cff).
 
 ## License
 

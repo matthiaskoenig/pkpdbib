@@ -49,17 +49,18 @@ The PDFs are written to the directory `<substance>/` next to the JSON file, name
 
 If you use `pkpdbib` please cite the archived software on [Zenodo](https://doi.org/10.5281/zenodo.11076700), see also [CITATION.cff](CITATION.cff):
 
-> König, M. (2024). *pkpdbib: python utilities for PK/PD literature and bibliography management* (Version 0.1.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.11076700
+> König, M. (2026). *pkpdbib: python utilities for PK/PD literature and bibliography management* (Version 0.2.0) [Computer software]. Zenodo. https://doi.org/10.5281/zenodo.23154630
 
 ```bibtex
 @software{konig_pkpdbib,
   author    = {König, Matthias},
   title     = {pkpdbib: python utilities for PK/PD literature and bibliography management},
-  year      = {2024},
-  version   = {0.1.0},
+  year      = {2026},
+  month     = oct,
+  version   = {0.2.0},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.11076700},
-  url       = {https://doi.org/10.5281/zenodo.11076700},
+  doi       = {10.5281/zenodo.23154630},
+  url       = {https://doi.org/10.5281/zenodo.23154630},
 }
 ```
 
