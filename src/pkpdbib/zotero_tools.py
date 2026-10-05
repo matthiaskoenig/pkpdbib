@@ -1,7 +1,5 @@
 """Programmatic access to Zotero libraries.
 
-Needs the optional `zotero` extra, i.e., `pip install "pkpdbib[zotero]"`.
-
 - documentation of pyzotero: https://pyzotero.readthedocs.io
 - API key: https://www.zotero.org/settings/keys/new
 - group id: open the page of the group via https://www.zotero.org/groups and
@@ -13,15 +11,8 @@ import re
 from collections.abc import Iterable
 from typing import Any
 
-try:
-    import polars as pl
-    from pyzotero import zotero
-except ImportError as err:  # pragma: no cover
-    msg = (
-        "pkpdbib.zotero_tools needs the optional `zotero` dependencies, "
-        'install them with `pip install "pkpdbib[zotero]"`.'
-    )
-    raise ImportError(msg) from err
+import polars as pl
+from pyzotero import zotero
 
 from pkpdbib.console import console
 
