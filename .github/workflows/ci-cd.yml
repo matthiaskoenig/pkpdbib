@@ -15,8 +15,9 @@ permissions:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
-  # superseded branch runs are cancelled, release runs are never cancelled
-  cancel-in-progress: ${{ !startsWith(github.ref, 'refs/tags/') }}
+  # a newer run supersedes the running one of the same branch or pull request;
+  # a release is never superseded, every tag is a group of its own
+  cancel-in-progress: true
 
 env:
   # the tools run with uvx are pinned, dependabot does not update them
@@ -35,27 +36,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # continuous integration tests python 3.14 on every platform, the older
+        # and newer versions and `lowest` are tested locally with
+        # `tox run-parallel`, see docs/development.md
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.13", "3.14", "3.15"]
-        # `py` (or none, as in the entries below) runs the environment of the
-        # python version, e.g. `py3.14`; another value runs that environment
-        tox-env: [py]
-        # linux covers the full range, windows and macos the newest version
-        exclude:
-          - os: windows-latest
-            python-version: "3.13"
-          - os: windows-latest
-            python-version: "3.14"
-          - os: macos-latest
-            python-version: "3.13"
-          - os: macos-latest
-            python-version: "3.14"
-        include:
-          # the suite against the lower bounds of the dependencies, see the
-          # `lowest` environment of tox.ini, which is pinned to python 3.13
-          - os: ubuntu-latest
-            python-version: "3.13"
-            tox-env: lowest
+        python-version: ["3.14"]
 
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
@@ -69,9 +54,11 @@ jobs:
         # a release run restores no cache, which zizmor cannot tell from the
         # expression; the distributions are built without one, see `build`
         enable-cache: ${{ !startsWith(github.ref, 'refs/tags/') }}  # zizmor: ignore[cache-poisoning]
+        # the interpreter is cached with the packages instead of downloaded by every run
+        cache-python: ${{ !startsWith(github.ref, 'refs/tags/') }}  # zizmor: ignore[cache-poisoning]
     - name: Test with tox
       env:
-        TOX_ENV: ${{ matrix.tox-env != 'py' && matrix.tox-env || format('py{0}', matrix.python-version) }}
+        TOX_ENV: py${{ matrix.python-version }}
       run: uvx --with "tox-uv==${TOX_UV_VERSION}" "tox@${TOX_VERSION}" -e "${TOX_ENV}"
       shell: bash
 

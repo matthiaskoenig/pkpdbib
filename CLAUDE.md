@@ -26,7 +26,7 @@ uv run pre-commit install
 # tests (no network, downloads and the zotero client are faked)
 pytest
 tox r -e py3.15                 # single tox env (py3.13-3.15, lowest)
-tox run-parallel                # full matrix + ty + lowest
+tox run-parallel                # full matrix + ty + lowest, run before opening a pull request
 
 # lint / format / types
 ruff check
@@ -41,4 +41,8 @@ uv run python scripts/llms_txt.py
 `develop` is the default branch and takes every change through a pull request,
 see the rulesets in `.github/rulesets/` and `docs/development.md`, which also
 describes the release (`uvx bump-my-version bump ...`, tag on `develop`).
+Continuous integration is kept minimal: `tests` runs only `py3.14`, on linux,
+macos and windows, every workflow cancels a superseded run
+(`cancel-in-progress: true`), uv caches packages and interpreters, dependabot
+runs monthly. The other python versions and `lowest` run only locally.
 Never commit API keys; examples read them from the environment.
