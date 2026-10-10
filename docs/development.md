@@ -19,12 +19,14 @@ A pull request can only be merged once the four required checks are green:
 
 | check   | workflow      | content                                                              |
 | ------- | ------------- | -------------------------------------------------------------------- |
-| `tests` | `ci-cd.yml`   | the test matrix, linux with python 3.13 to 3.15, macos and windows with 3.15, and the lower bounds of the dependencies (`lowest`) |
+| `tests` | `ci-cd.yml`   | the test matrix, python 3.14 on linux, macos and windows              |
 | `ruff`  | `ruff.yml`    | `ruff check` and `ruff format --check`                                |
 | `ty`    | `ty.yml`      | `tox r -e ty`                                                         |
 | `docs`  | `docs.yml`    | the zensical build including the api reference and the agent files    |
 
 `tests` aggregates the test matrix into a single job, so the name of the required check stays the same when the matrix changes.
+
+Continuous integration is kept small: every workflow cancels its running build when a newer commit of the same branch or pull request arrives, uv caches the packages and the interpreters between runs, dependabot proposes its updates once a month, and the matrix tests only python 3.14. The other python versions and `lowest` are tested locally, see [Testing](#testing), before a pull request is opened.
 
 Further rules of a pull request:
 
@@ -104,9 +106,9 @@ and the complete matrix, including the `ty` and `lowest` environments, in parall
 tox run-parallel
 ```
 
-What follows `--` is passed to pytest, e.g., `tox r -e py3.14 -- tests/test_scihub_tools.py`. The environments need the interpreters, which uv installs with `uv python install 3.13 3.14 3.15`. Continuous integration runs the same environments with `uvx --with tox-uv tox -e py3.15`.
+What follows `--` is passed to pytest, e.g., `tox r -e py3.14 -- tests/test_scihub_tools.py`. The environments need the interpreters, which uv installs with `uv python install 3.13 3.14 3.15`. It is the complete test and is run before a pull request is opened: continuous integration runs only `py3.14`, on linux, macos and windows, with `uvx --with tox-uv tox -e py3.14 -- --durations=15`, which lists the slowest tests in the log.
 
-The `lowest` environment installs the oldest version of every dependency which the lower bounds in `pyproject.toml` allow (`uv_resolution = lowest-direct`, their own dependencies stay at the newest) on python 3.13 and runs the suite against it, so a lower bound is only ever raised or lowered together with a run of it. It runs in the test matrix of `ci-cd.yml` and is part of the required `tests` check.
+The `lowest` environment installs the oldest version of every dependency which the lower bounds in `pyproject.toml` allow (`uv_resolution = lowest-direct`, their own dependencies stay at the newest) on python 3.13 and runs the suite against it, so a lower bound is only ever raised or lowered together with a run of it. It runs locally only, as part of `tox run-parallel`.
 
 ```bash
 tox r -e lowest
@@ -114,7 +116,7 @@ tox r -e lowest
 
 The workflows pin every action to the full commit SHA of a release, with the version in a comment; dependabot updates both. The tools run with `uvx` (tox, tox-uv, twine) are pinned in the `env` of `ci-cd.yml` and `ty.yml`, which dependabot does not update, so they are raised by hand. The same holds for uv itself, pinned with the `version` input of every `astral-sh/setup-uv` step in `ci-cd.yml`, `ty.yml` and `docs.yml`. `hatchling` in `[build-system]` stays a lower bound on purpose: the package is built in an isolated environment which resolves it anew, and the lower bound is the oldest release the build is known to work with.
 
-Dependabot also bumps the locked python dependencies (`uv.lock`, `versioning-strategy: lockfile-only` so the lower bounds in `pyproject.toml` are never raised by it) and the hook revisions in `.pre-commit-config.yaml`, each as one grouped weekly pull request. The `ruff` workflow installs the ruff version locked in `uv.lock`, so CI and `uv run ruff` agree, and the ruff and ty hook revisions are expected to match the lock; after merging one of these pull requests, raise the other to the same version if it lags.
+Dependabot also bumps the locked python dependencies (`uv.lock`, `versioning-strategy: lockfile-only` so the lower bounds in `pyproject.toml` are never raised by it) and the hook revisions in `.pre-commit-config.yaml`, each as one grouped monthly pull request. The `ruff` workflow installs the ruff version locked in `uv.lock`, so CI and `uv run ruff` agree, and the ruff and ty hook revisions are expected to match the lock; after merging one of these pull requests, raise the other to the same version if it lags.
 
 To run the tests directly against the development environment use
 
