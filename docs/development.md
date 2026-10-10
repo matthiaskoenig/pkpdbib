@@ -106,7 +106,7 @@ and the complete matrix, including the `ty` and `lowest` environments, in parall
 tox run-parallel
 ```
 
-What follows `--` is passed to pytest, e.g., `tox r -e py3.14 -- tests/test_scihub_tools.py`. The environments need the interpreters, which uv installs with `uv python install 3.13 3.14 3.15`. It is the complete test and is run before a pull request is opened: continuous integration runs only `py3.14`, on linux, macos and windows, with `uvx --with tox-uv tox -e py3.14`.
+What follows `--` is passed to pytest, e.g., `tox r -e py3.14 -- tests/test_scihub_tools.py`. The environments need the interpreters, which uv installs with `uv python install 3.13 3.14 3.15`. It is the complete test and is run before a pull request is opened: continuous integration runs only `py3.14`, on linux, macos and windows, with `uvx --with tox-uv tox -e py3.14 -- --durations=15`, which lists the slowest tests in the log.
 
 The `lowest` environment installs the oldest version of every dependency which the lower bounds in `pyproject.toml` allow (`uv_resolution = lowest-direct`, their own dependencies stay at the newest) on python 3.13 and runs the suite against it, so a lower bound is only ever raised or lowered together with a run of it. It runs locally only, as part of `tox run-parallel`.
 

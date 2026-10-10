@@ -59,7 +59,8 @@ jobs:
     - name: Test with tox
       env:
         TOX_ENV: py${{ matrix.python-version }}
-      run: uvx --with "tox-uv==${TOX_UV_VERSION}" "tox@${TOX_VERSION}" -e "${TOX_ENV}"
+      # the slowest tests are listed in the log, so that they stay visible
+      run: uvx --with "tox-uv==${TOX_UV_VERSION}" "tox@${TOX_VERSION}" -e "${TOX_ENV}" -- --durations=15
       shell: bash
 
   tests:
