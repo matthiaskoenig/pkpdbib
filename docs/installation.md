@@ -24,7 +24,7 @@ pip install pkpdbib
 
 ## Dependencies
 
-`pkpdbib` depends on `rich` for the console output, `scidownl` for the [PDF retrieval](pdfs.md), and `pyzotero` and `polars` for the [Zotero libraries](zotero.md).
+`pkpdbib` depends on `rich` for the console output, `scidownl` for the [PDF retrieval](pdfs.md), and `pyzotero` and `polars` for the [Zotero libraries](zotero.md). It requires `certifi>=2026.10.19`, which requests (a dependency of `scidownl`) uses for its certificate authorities, so that no installation trusts the compromised emSign root CA of [GHSA-6q48-6c7w-9gw2](https://github.com/advisories/GHSA-6q48-6c7w-9gw2).
 
 ## Development version
 

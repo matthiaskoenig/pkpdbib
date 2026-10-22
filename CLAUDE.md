@@ -4,14 +4,7 @@ This file provides guidance when working with code in this repository.
 
 ## Project
 
-`pkpdbib` is a python library for PK/PD literature and bibliography management:
-retrieval of the PDFs of the DOIs of a Zotero export (Better BibTeX JSON) via
-scidownl (`pkpdbib.scihub_tools`, CLI `scihub_pdfs`) and access to Zotero
-libraries via pyzotero with tag tables in polars (`pkpdbib.zotero_tools`).
-Requires python >= 3.13, packaged with hatchling (version is read from
-`src/pkpdbib/__init__.py`). Runtime dependencies are `rich`, `scidownl`,
-`pyzotero` and `polars`. Keep the footprint small: no new runtime dependency
-without need, no pandas. MIT licensed.
+`pkpdbib` is a python library for PK/PD literature and bibliography management: retrieval of the PDFs of the DOIs of a Zotero export (Better BibTeX JSON) via scidownl (`pkpdbib.scihub_tools`, CLI `scihub_pdfs`) and access to Zotero libraries via pyzotero with tag tables in polars (`pkpdbib.zotero_tools`). Requires python >= 3.13, packaged with hatchling (version is read from `src/pkpdbib/__init__.py`). Runtime dependencies are `rich`, `scidownl`, `pyzotero` and `polars`, plus the floor `certifi>=2026.10.19` (GHSA-6q48-6c7w-9gw2, certifi comes in via requests of scidownl). Keep the footprint small: no new runtime dependency without need, no pandas. MIT licensed.
 
 The README is a short entry point (description, installation, citation,
 license); the content lives in the documentation in `docs/`.
